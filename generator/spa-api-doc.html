@@ -1,0 +1,1407 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="noindex">
+
+    <title>API Documentation</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/googlecode.min.css" integrity="sha256-arq4LfC7imzesljdi/Th/9Sws1lwfF/iq5a+A7oycTg=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,600|IBM+Plex+Sans:300,400,500,600&amp;subset=latin-ext" rel="stylesheet">
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .h2 {
+            font-weight: 300;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        #app {
+            display: flex;
+            height: 100%;
+        }
+
+        .sidebar {
+            flex: 0 0 auto;
+            overflow-y: auto;
+            font-size: 14px;
+            border-right: 1px solid #dee2e6;
+            background-color: #fcfcfc;
+        }
+
+        .sidebar .nav-link {
+            padding: 0 1rem;
+        }
+
+        .main {
+            flex: 1 1 auto;
+            overflow: auto;
+        }
+
+        .card {
+            margin-bottom: 1rem;
+        }
+
+        .card-body {
+            overflow-x: auto;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .api-desc {
+            padding: 25px 30px 30px 30px;
+            font-size: 14px;
+        }
+
+        .api-desc:last-child {
+            padding-bottom: 15px;
+        }
+
+        .api-desc table {
+            margin-bottom: 15px;
+        }
+
+        .api-desc table:last-child {
+            margin-bottom: 0;
+        }
+
+        .api-desc code {
+            font-size: 14px;
+            background-color: #f8f8f8;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .api-desc pre {
+            border: none;
+            margin: 0 0 8px 0;
+            white-space: pre-wrap;
+        }
+
+        .api-desc-response {
+            border-top: none !important;
+        }
+
+        .api-desc-hidden {
+            display: none;
+        }
+
+        .api-desc h5 {
+            color: #019732;
+            font-size: 14px;
+        }
+
+        .api-desc th {
+            font-weight: normal;
+            color: #6c757d;
+        }
+
+        .api-desc p {
+            padding: 8px 0;
+        }
+
+        .api-desc-action code {
+            font-size: 14px;
+            background-color: #ff6600;
+            color: #fff;
+            padding: 5px 6px 4px 6px;
+        }
+
+        .api-desc-action .badge {
+            font-size: 91%;
+            padding: .4em .7em;
+        }
+
+        samp {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        code {
+            padding: 2px 4px;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        pre {
+            font-size: 13px;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .container-fluid {
+            position: relative;
+            height: 100%;
+        }
+
+        .apilabel {
+            font-size: 14px;
+            color: #fff;
+            padding: 0 6px;
+            display: inline-block;
+            height: 25px;
+            line-height: 25px;
+            vertical-align: middle;
+        }
+
+        .apilabel-mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .apilabel-bold {
+            font-weight: 600;
+        }
+
+        .table th {
+            border-top: 0;
+        }
+
+        .table-sm td, .table-sm th {
+            padding: .4rem;
+        }
+
+        .hljs {
+            background-color: #fcfcfc;
+        }
+
+        .border-none {
+            border-color: transparent;
+        }
+
+        .card-header {
+            border-radius: 0 !important;
+        }
+
+        .badge {
+            border-radius: 0;
+            font-weight: 600;
+        }
+
+        b, strong {
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="app" v-cloak>
+    <div class="sidebar">
+        <nav class="nav nav-pills flex-column">
+            <template v-for="section in docs">
+                <a class="nav-link px-3 mt-4 mb-1" :href="'#' + section.name"><b>{{ section.name }}</b></a>
+                <nav class="nav nav-pills flex-column" v-for="action in section.actions">
+                    <a class="nav-link ml-3 my-1 pr-4" :href="'#' + action.path"><span :class="['badge', 'badge-' + getActionColor(action.method)]">{{ action.method }}</span> {{ action.path }}</a>
+                </nav>
+            </template>
+        </nav>
+    </div>
+
+    <div class="main">
+        <div class="container-fluid mt-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2">API Documentation</h1>
+            </div>
+            <div class="card border-none" v-for="section in docs">
+                <div class="card-header bg-dark text-white" :id="section.name">{{ section.name }}</div>
+                <div class="card-body">
+                    <template v-for="action in section.actions">
+                        <div class="api-desc-action" :id="action.path">
+                            <span class="apilabel bg-secondary text-white" v-if="action.secured"><i class="fa fa-lock"></i></span>
+                            <span class="apilabel apilabel-mono" :class="['bg-' + getActionColor(action.method), {'text-dark': action.method === 'PUT'}]"><b>{{ action.method }}</b> {{ action.path }}</span>
+                            <span class="apilabel apilabel-bold bg-light text-dark">{{ action.short_description }}</span>
+                        </div>
+                        <div class="api-desc">
+                            <div v-if="action.long_description">
+                                <h5>Documentation</h5>
+                                <p v-html="action.long_description"></p>
+                            </div>
+                            <template v-if="action.parameters">
+                                <h5>Parameters</h5>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Required</th>
+                                            <th>Default</th>
+                                            <th>Description</th>
+                                            <th>Example</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="parameter in action.parameters">
+                                            <td><code>{{ parameter.name }}</code></td>
+                                            <td>{{ parameter.type }}</td>
+                                            <td>{{ parameter.required }}</td>
+                                            <td><samp>{{ parameter.defaults }}</samp></td>
+                                            <td>{{ parameter.description }}</td>
+                                            <td><samp>{{ parameter.example }}</samp></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </template>
+                            <template v-if="action.status_codes">
+                                <h5>Status Codes</h5>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 42px"></th>
+                                            <th style="width: 87px">Code</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template v-for="statusCode in action.status_codes">
+                                            <tr>
+                                                <td>
+                                                    <a href="#" class="api-desc-toggle">
+                                                        <i class="fa fa-plus-circle fa-fw fa-lg text-primary"></i>
+                                                    </a>
+                                                </td>
+                                                <td><code>{{ statusCode.code }}</code></td>
+                                                <td v-html="statusCode.description"></td>
+                                            </tr>
+                                            <tr class="api-desc-hidden">
+                                                <td colspan="3" class="api-desc-response">
+                                                    <pre>{{ statusCode.response }}</pre>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha256-5+02zu5UULQkO7w1GIr6vftCgMfFdZcAHeDtFnKZsBs=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js" integrity="sha256-TaLceMwjWRqe4yhbqPOJH6V7UGt5AvvdNfpaIXJWbFU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+
+        data: {
+            docs: [
+                {
+                    "name": "Authentication",
+                    "actions": [
+                        {
+                            "method": "POST",
+                            "path": "/api/v1/login",
+                            "secured": false,
+                            "short_description": "Login",
+                            "long_description": null,
+                            "parameters": [
+                                {
+                                    "name": "email",
+                                    "type": "string",
+                                    "required": "true",
+                                    "defaults": null,
+                                    "description": "Email",
+                                    "example": "user@example.com"
+                                },
+                                {
+                                    "name": "password",
+                                    "type": "string",
+                                    "required": "true",
+                                    "defaults": null,
+                                    "description": "Password",
+                                    "example": "12345"
+                                }
+                            ],
+                            "status_codes": [
+                                {
+                                    "code": 200,
+                                    "description": "OK",
+                                    "response": {
+                                        "token": "abcdefgh",
+                                        "user": {
+                                            "id": 2,
+                                            "subscriber_id": 2,
+                                            "email": "owner@example.com",
+                                            "active": 1,
+                                            "firstname": "John",
+                                            "lastname": "Doe",
+                                            "role": "owner",
+                                            "locale": "pl",
+                                            "last_login": "2016-10-31 17:09:37"
+                                        }
+                                    }
+                                },
+                                {
+                                    "code": 401,
+                                    "description": "Incorrect login or password",
+                                    "response": {
+                                        "message": "Incorrect login or password"
+                                    }
+                                },
+                                {
+                                    "code": 422,
+                                    "description": "Validation error",
+                                    "response": {
+                                        "message": "Validation error",
+                                        "errors": {
+                                            "email": [
+                                                "The email field is required."
+                                            ],
+                                            "password": [
+                                                "The password field is required."
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "code": 500,
+                                    "description": "Internal server error",
+                                    "response": {
+                                        "message": "Internal server error"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Tasks",
+                    "actions": [
+                        {
+                            "method": "GET",
+                            "path": "/api/v1/tasks",
+                            "secured": true,
+                            "short_description": "Index",
+                            "long_description": "Requires <code>Authorization: Bearer token</code> header",
+                            "parameters": [
+                                {
+                                    "name": "show_all_users",
+                                    "type": "bool",
+                                    "required": "false",
+                                    "defaults": "false",
+                                    "description": "If true: show tasks of all users. If false: show only the currently logged in user tasks",
+                                    "example": "true / 1"
+                                }
+                            ],
+                            "status_codes": [
+                                {
+                                    "code": 200,
+                                    "description": "OK",
+                                    "response": {
+                                        "data": [
+                                            {
+                                                "id": 14,
+                                                "task_type_id": 1,
+                                                "user_ids": [
+                                                    4,
+                                                    5
+                                                ],
+                                                "user": "Nico Larson, Caden Tromp",
+                                                "subscriber": "Subskrybent",
+                                                "name": "Laudantium exercitationem sapiente voluptatum et.",
+                                                "date": "2017-02-01",
+                                                "datetime": "2017-02-01 08:00:00",
+                                                "is_asap": false,
+                                                "is_datetime_format": true,
+                                                "is_done": false,
+                                                "description": "Quo voluptatem nemo dolorum rerum consequatur iure est. Ipsa aut ab error et aliquam. Explicabo optio ut itaque vitae nihil quia.",
+                                                "comment": null,
+                                                "company_id": 0,
+                                                "company": "",
+                                                "showDescription": false,
+                                                "isTask": true,
+                                                "done_date": "2017-02-01",
+                                                "updated_at": "2017-03-17 13:54:46",
+                                                "tags": {
+                                                    "data": [
+                                                        "lorem",
+                                                        "ipsum"
+                                                    ]
+                                                },
+                                                "subTasks": {
+                                                    "data": []
+                                                }
+                                            },
+                                            {
+                                                "id": 16,
+                                                "task_type_id": 1,
+                                                "user_ids": [
+                                                    3
+                                                ],
+                                                "user": "Davion Ledner",
+                                                "subscriber": "Subskrybent",
+                                                "name": "Molestias quidem minima architecto dolorem dolores harum debitis.",
+                                                "date": "2017-02-01",
+                                                "datetime": "2017-02-01 00:00:00",
+                                                "is_asap": false,
+                                                "is_datetime_format": false,
+                                                "is_done": false,
+                                                "description": "Voluptatem vero non molestias dignissimos corporis doloremque nam. Et voluptatum qui dicta eveniet vel doloribus quis. Aut officiis odio dolor recusandae.",
+                                                "comment": null,
+                                                "company_id": 0,
+                                                "company": "",
+                                                "showDescription": false,
+                                                "isTask": true,
+                                                "done_date": "2017-02-01",
+                                                "updated_at": "2017-02-01 13:47:08",
+                                                "tags": {
+                                                    "data": [
+                                                        "lorem",
+                                                        "ipsum"
+                                                    ]
+                                                },
+                                                "subTasks": {
+                                                    "data": [
+                                                        {
+                                                            "id": 81,
+                                                            "name": "Sunt recusandae ut impedit numquam.",
+                                                            "is_done": false,
+                                                            "order": 1,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-02-01 13:47:08"
+                                                        },
+                                                        {
+                                                            "id": 82,
+                                                            "name": "Nihil omnis blanditiis vero est vel aut id dolor.",
+                                                            "is_done": false,
+                                                            "order": 2,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-02-01 13:47:08"
+                                                        },
+                                                        {
+                                                            "id": 83,
+                                                            "name": "Quia facilis eaque non dolor.",
+                                                            "is_done": false,
+                                                            "order": 3,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-02-01 13:47:08"
+                                                        },
+                                                        {
+                                                            "id": 84,
+                                                            "name": "Sapiente numquam sint nostrum explicabo id ad enim quia.",
+                                                            "is_done": false,
+                                                            "order": 4,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-02-01 13:47:08"
+                                                        },
+                                                        {
+                                                            "id": 85,
+                                                            "name": "Quasi occaecati voluptas ab consectetur et.",
+                                                            "is_done": false,
+                                                            "order": 5,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-02-01 13:47:08"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "id": 15,
+                                                "task_type_id": 1,
+                                                "user_ids": [
+                                                    2,
+                                                    4
+                                                ],
+                                                "user": "Richmond Stamm, Nico Larson",
+                                                "subscriber": "Subskrybent",
+                                                "name": "Ut nulla ullam natus at et.",
+                                                "date": "2017-02-01",
+                                                "datetime": "2017-02-01 00:00:00",
+                                                "is_asap": false,
+                                                "is_datetime_format": false,
+                                                "is_done": false,
+                                                "description": "Eos dolor ea sunt sit. Magnam officiis id aut mollitia ipsum. Culpa deleniti quam libero ipsa recusandae explicabo. Dolor nihil non quod.",
+                                                "comment": null,
+                                                "company_id": 5,
+                                                "company": "Yundt Group",
+                                                "showDescription": false,
+                                                "isTask": true,
+                                                "done_date": null,
+                                                "updated_at": "2017-03-29 07:54:50",
+                                                "tags": {
+                                                    "data": [
+                                                        "lorem",
+                                                        "ipsum"
+                                                    ]
+                                                },
+                                                "subTasks": {
+                                                    "data": [
+                                                        {
+                                                            "id": 383,
+                                                            "name": "Qui est dolor voluptatem voluptate fugit recusandae.",
+                                                            "is_done": true,
+                                                            "order": 1,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-03-29 07:54:50"
+                                                        },
+                                                        {
+                                                            "id": 384,
+                                                            "name": "Neque quis vitae eum rerum.",
+                                                            "is_done": false,
+                                                            "order": 2,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-03-29 07:54:50"
+                                                        },
+                                                        {
+                                                            "id": 385,
+                                                            "name": "Ipsam et eos aut iusto necessitatibus est.",
+                                                            "is_done": false,
+                                                            "order": 3,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-03-29 07:54:50"
+                                                        },
+                                                        {
+                                                            "id": 386,
+                                                            "name": "Quidem incidunt accusamus officiis voluptate porro quae non porro.",
+                                                            "is_done": false,
+                                                            "order": 4,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-03-29 07:54:50"
+                                                        },
+                                                        {
+                                                            "id": 387,
+                                                            "name": "Quibusdam sed rerum ut nesciunt velit eum.",
+                                                            "is_done": false,
+                                                            "order": 5,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-03-29 07:54:50"
+                                                        },
+                                                        {
+                                                            "id": 388,
+                                                            "name": "Sit eius vero reiciendis necessitatibus rerum dolorum.",
+                                                            "is_done": false,
+                                                            "order": 6,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-03-29 07:54:50"
+                                                        },
+                                                        {
+                                                            "id": 389,
+                                                            "name": "Aspernatur nihil sint dolor vel quia sit quia.",
+                                                            "is_done": false,
+                                                            "order": 7,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-03-29 07:54:50"
+                                                        },
+                                                        {
+                                                            "id": 390,
+                                                            "name": "Laborum consequuntur aliquam quo.",
+                                                            "is_done": false,
+                                                            "order": 8,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-03-29 07:54:50"
+                                                        },
+                                                        {
+                                                            "id": 391,
+                                                            "name": "Ut dolore totam sequi ducimus et provident qui.",
+                                                            "is_done": false,
+                                                            "order": 9,
+                                                            "company_id": 0,
+                                                            "comment": null,
+                                                            "updated_at": "2017-03-29 07:54:50"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "code": 401,
+                                    "description": "Unauthorized",
+                                    "response": {
+                                        "message": "Unauthorized"
+                                    }
+                                },
+                                {
+                                    "code": 500,
+                                    "description": "Internal Server Error",
+                                    "response": {
+                                        "message": "Internal Server Error"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "method": "GET",
+                            "path": "/api/v1/tasks/{id}",
+                            "secured": true,
+                            "short_description": "Show",
+                            "long_description": "Requires <code>Authorization: Bearer token</code> header",
+                            "parameters": null,
+                            "status_codes": [
+                                {
+                                    "code": 200,
+                                    "description": "OK",
+                                    "response": {
+                                        "data": {
+                                            "id": 72,
+                                            "task_type_id": 1,
+                                            "user_ids": [
+                                                4
+                                            ],
+                                            "user": "Santa Willms",
+                                            "subscriber": "Subskrybent",
+                                            "name": "Ea aut molestias quaerat mollitia dolores.",
+                                            "date": "2016-11-07",
+                                            "datetime": "2016-11-07 00:00:00",
+                                            "is_asap": true,
+                                            "is_datetime_format": false,
+                                            "is_done": false,
+                                            "description": "Eligendi vitae ut sint quo voluptas sed ex. Quas laudantium asperiores cupiditate suscipit excepturi animi error. Modi repellat voluptatem non et ea. Voluptatem ea quia omnis assumenda.",
+                                            "comment": null,
+                                            "company_id": 3,
+                                            "company": "King-Wisoky",
+                                            "showDescription": false,
+                                            "isTask": true,
+                                            "done_date": "2016-11-18",
+                                            "updated_at": "2016-11-08 11:12:09",
+                                            "tags": {
+                                                "data": [
+                                                    "lorem",
+                                                    "ipsum"
+                                                ]
+                                            },
+                                            "subTasks": {
+                                                "data": [
+                                                    {
+                                                        "id": 319,
+                                                        "name": "Voluptate molestiae qui labore sit maiores labore.",
+                                                        "is_done": false,
+                                                        "order": 1,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 320,
+                                                        "name": "Nihil quae voluptatem sint.",
+                                                        "is_done": false,
+                                                        "order": 2,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 321,
+                                                        "name": "Pariatur excepturi eveniet voluptatem aperiam quas excepturi eius molestiae.",
+                                                        "is_done": false,
+                                                        "order": 3,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 322,
+                                                        "name": "Enim quia nesciunt earum sit.",
+                                                        "is_done": false,
+                                                        "order": 4,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 323,
+                                                        "name": "Laborum et odit totam exercitationem saepe velit quia.",
+                                                        "is_done": false,
+                                                        "order": 5,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "code": 401,
+                                    "description": "Unauthorized",
+                                    "response": {
+                                        "message": "Unauthorized"
+                                    }
+                                },
+                                {
+                                    "code": 404,
+                                    "description": "Not Found",
+                                    "response": {
+                                        "message": "Not Found"
+                                    }
+                                },
+                                {
+                                    "code": 500,
+                                    "description": "Internal Server Error",
+                                    "response": {
+                                        "message": "Internal Server Error"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "method": "PUT",
+                            "path": "/api/v1/tasks/{id}/is_done",
+                            "secured": true,
+                            "short_description": "Update",
+                            "long_description": "Requires <code>Authorization: Bearer token</code> header",
+                            "parameters": [
+                                {
+                                    "name": "is_done",
+                                    "type": "bool",
+                                    "required": "true",
+                                    "defaults": null,
+                                    "description": "Is done?",
+                                    "example": "true / 1"
+                                },
+                                {
+                                    "name": "updated_at",
+                                    "type": "string",
+                                    "required": "true",
+                                    "defaults": null,
+                                    "description": "Task updated at date (UTC)",
+                                    "example": "2016-11-08 11:12:09"
+                                }
+                            ],
+                            "status_codes": [
+                                {
+                                    "code": 200,
+                                    "description": "OK",
+                                    "response": {
+                                        "message": "OK",
+                                        "data": {
+                                            "id": 15,
+                                            "task_type_id": 1,
+                                            "user_ids": [
+                                                2
+                                            ],
+                                            "user": "Yasmin Osinski",
+                                            "subscriber": "Subskrybent",
+                                            "name": "Libero qui quidem quis architecto et eum voluptas.",
+                                            "date": "2016-11-07",
+                                            "datetime": "2016-11-07 00:00:00",
+                                            "is_asap": false,
+                                            "is_datetime_format": false,
+                                            "is_done": false,
+                                            "description": "Pariatur quasi dolor sed atque repudiandae. Culpa et qui ex iusto ut incidunt reiciendis. Sed rerum quia eius mollitia itaque ut. Nesciunt repellat commodi dolores.",
+                                            "comment": null,
+                                            "company_id": 4,
+                                            "company": "Gottlieb-Kovacek",
+                                            "showDescription": false,
+                                            "isTask": true,
+                                            "done_date": null,
+                                            "updated_at": "2016-11-08 11:12:09",
+                                            "tags": {
+                                                "data": [
+                                                    "lorem",
+                                                    "ipsum"
+                                                ]
+                                            },
+                                            "subTasks": {
+                                                "data": [
+                                                    {
+                                                        "id": 59,
+                                                        "name": "Itaque cumque distinctio voluptatem.",
+                                                        "is_done": false,
+                                                        "order": 1,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 60,
+                                                        "name": "Non quod sit exercitationem harum aliquid.",
+                                                        "is_done": false,
+                                                        "order": 2,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 61,
+                                                        "name": "In aliquid rerum velit soluta laboriosam.",
+                                                        "is_done": false,
+                                                        "order": 3,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 62,
+                                                        "name": "Ullam optio quia aut quas.",
+                                                        "is_done": false,
+                                                        "order": 4,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 63,
+                                                        "name": "Voluptatem sint officiis dolores repudiandae.",
+                                                        "is_done": false,
+                                                        "order": 5,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 64,
+                                                        "name": "Provident adipisci ut non ratione velit.",
+                                                        "is_done": false,
+                                                        "order": 6,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 65,
+                                                        "name": "Cupiditate voluptate reprehenderit necessitatibus sint reiciendis consequatur itaque.",
+                                                        "is_done": false,
+                                                        "order": 7,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "code": 401,
+                                    "description": "Unauthorized",
+                                    "response": {
+                                        "message": "Unauthorized"
+                                    }
+                                },
+                                {
+                                    "code": 404,
+                                    "description": "Not Found",
+                                    "response": {
+                                        "message": "Not Found"
+                                    }
+                                },
+                                {
+                                    "code": 409,
+                                    "description": "Conflict - <code>updated_at</code> has changed between requests. Returns current data",
+                                    "response": {
+                                        "message": "Conflict",
+                                        "data": {
+                                            "id": 15,
+                                            "task_type_id": 1,
+                                            "user_ids": [
+                                                2
+                                            ],
+                                            "user": "Yasmin Osinski",
+                                            "subscriber": "Subskrybent",
+                                            "name": "Libero qui quidem quis architecto et eum voluptas.",
+                                            "date": "2016-11-07",
+                                            "datetime": "2016-11-07 00:00:00",
+                                            "is_asap": false,
+                                            "is_datetime_format": false,
+                                            "is_done": false,
+                                            "description": "Pariatur quasi dolor sed atque repudiandae. Culpa et qui ex iusto ut incidunt reiciendis. Sed rerum quia eius mollitia itaque ut. Nesciunt repellat commodi dolores.",
+                                            "comment": null,
+                                            "company_id": 4,
+                                            "company": "Gottlieb-Kovacek",
+                                            "showDescription": false,
+                                            "isTask": true,
+                                            "done_date": null,
+                                            "updated_at": "2016-11-08 11:12:09",
+                                            "tags": {
+                                                "data": [
+                                                    "lorem",
+                                                    "ipsum"
+                                                ]
+                                            },
+                                            "subTasks": {
+                                                "data": [
+                                                    {
+                                                        "id": 59,
+                                                        "name": "Itaque cumque distinctio voluptatem.",
+                                                        "is_done": false,
+                                                        "order": 1,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 60,
+                                                        "name": "Non quod sit exercitationem harum aliquid.",
+                                                        "is_done": false,
+                                                        "order": 2,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 61,
+                                                        "name": "In aliquid rerum velit soluta laboriosam.",
+                                                        "is_done": false,
+                                                        "order": 3,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 62,
+                                                        "name": "Ullam optio quia aut quas.",
+                                                        "is_done": false,
+                                                        "order": 4,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 63,
+                                                        "name": "Voluptatem sint officiis dolores repudiandae.",
+                                                        "is_done": false,
+                                                        "order": 5,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 64,
+                                                        "name": "Provident adipisci ut non ratione velit.",
+                                                        "is_done": false,
+                                                        "order": 6,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    },
+                                                    {
+                                                        "id": 65,
+                                                        "name": "Cupiditate voluptate reprehenderit necessitatibus sint reiciendis consequatur itaque.",
+                                                        "is_done": false,
+                                                        "order": 7,
+                                                        "company_id": 0,
+                                                        "comment": null,
+                                                        "updated_at": "2016-11-08 11:12:09"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "code": 422,
+                                    "description": "Validation error",
+                                    "response": {
+                                        "message": "Validation error",
+                                        "errors": {
+                                            "is_done": [
+                                                "The is done field is required."
+                                            ],
+                                            "updated_at": [
+                                                "The updated at field is required."
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "code": 500,
+                                    "description": "Internal server error",
+                                    "response": {
+                                        "message": "Internal server error"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Contacts",
+                    "actions": [
+                        {
+                            "method": "GET",
+                            "path": "/api/v1/contacts",
+                            "secured": true,
+                            "short_description": "Index",
+                            "long_description": "Requires <code>Authorization: Bearer token</code> header",
+                            "parameters": null,
+                            "status_codes": [
+                                {
+                                    "code": 200,
+                                    "description": "OK",
+                                    "response": {
+                                        "data": [
+                                            {
+                                                "id": 3,
+                                                "company_id": 1,
+                                                "company_name": "Cormier Ltd",
+                                                "company_address": "Lorem ipsum street",
+                                                "uuid": "81a642f4861a47c0b162f2397c355ebd6",
+                                                "firstname": "Luther",
+                                                "lastname": "Kassulke",
+                                                "email": "shana.vandervort2@example.com",
+                                                "phone": "123456789",
+                                                "mailing_subscription": true,
+                                                "isSelected": false,
+                                                "skype": null,
+                                                "comment": null
+                                            },
+                                            {
+                                                "id": 2,
+                                                "company_id": 1,
+                                                "company_name": "Cormier Ltd",
+                                                "company_address": "Lorem ipsum street",
+                                                "uuid": "24eae0cc5ac14f39b710234c0bf4d77a0",
+                                                "firstname": "Nathen",
+                                                "lastname": "Terry",
+                                                "email": "ernestine.bins7@example.com",
+                                                "phone": "123456789",
+                                                "mailing_subscription": true,
+                                                "isSelected": false,
+                                                "skype": null,
+                                                "comment": null
+                                            },
+                                            {
+                                                "id": 1,
+                                                "company_id": 1,
+                                                "company_name": "Cormier Ltd",
+                                                "company_address": "Lorem ipsum street",
+                                                "uuid": "36047e85118a4579b62sdf9ce494b717d",
+                                                "firstname": "Urban",
+                                                "lastname": "Veum",
+                                                "email": "lenora2310@example.com",
+                                                "phone": "123456789",
+                                                "mailing_subscription": true,
+                                                "isSelected": false,
+                                                "skype": null,
+                                                "comment": null
+                                            },
+                                            {
+                                                "id": 6,
+                                                "company_id": 2,
+                                                "company_name": "Sawayn Inc",
+                                                "company_address": null,
+                                                "uuid": "e0d867cff26c46569b12b730eaabca040",
+                                                "firstname": "Larissa",
+                                                "lastname": "Doyle",
+                                                "email": "river103@example.com",
+                                                "phone": "123456789",
+                                                "mailing_subscription": true,
+                                                "isSelected": false,
+                                                "skype": null,
+                                                "comment": null
+                                            },
+                                            {
+                                                "id": 4,
+                                                "company_id": 2,
+                                                "company_name": "Sawayn Inc",
+                                                "company_address": null,
+                                                "uuid": "9848aa11213e4e099bve3757fb43ca1b",
+                                                "firstname": "Meggie",
+                                                "lastname": "O'Hara",
+                                                "email": "micaela0110@example.com",
+                                                "phone": "123456789",
+                                                "mailing_subscription": true,
+                                                "isSelected": false,
+                                                "skype": null,
+                                                "comment": null
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "code": 401,
+                                    "description": "Unauthorized",
+                                    "response": {
+                                        "message": "Unauthorized"
+                                    }
+                                },
+                                {
+                                    "code": 500,
+                                    "description": "Internal Server Error",
+                                    "response": {
+                                        "message": "Internal Server Error"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Documents",
+                    "actions": [
+                        {
+                            "method": "GET",
+                            "path": "/api/v1/documents",
+                            "secured": true,
+                            "short_description": "Index",
+                            "long_description": "Requires <code>Authorization: Bearer token</code> header",
+                            "parameters": null,
+                            "status_codes": [
+                                {
+                                    "code": 200,
+                                    "description": "OK",
+                                    "response": {
+                                        "data": [
+                                            {
+                                                "id": 24,
+                                                "subscriber_id": 2,
+                                                "subscriber": "Subskrybent",
+                                                "name": "Jakiś plik",
+                                                "file_id": 24,
+                                                "user_id": 2,
+                                                "user": "Richmond Stamm",
+                                                "is_private": true,
+                                                "company_id": 3,
+                                                "company_name": "Cassin Group",
+                                                "type_id": 1,
+                                                "tags": {
+                                                    "data": [
+                                                        "obraz"
+                                                    ]
+                                                },
+                                                "file": {
+                                                    "data": {
+                                                        "id": 24,
+                                                        "subscriber_id": 2,
+                                                        "name": "abc-400x400.jpeg",
+                                                        "orginal_name": "abc_400x400.jpeg",
+                                                        "updated_at": "2017-03-29 11:49:17"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": 25,
+                                                "subscriber_id": 2,
+                                                "subscriber": "Subskrybent",
+                                                "name": "Coś innego",
+                                                "file_id": 25,
+                                                "user_id": 2,
+                                                "user": "Richmond Stamm",
+                                                "is_private": false,
+                                                "company_id": 0,
+                                                "company_name": "-",
+                                                "type_id": 1,
+                                                "tags": {
+                                                    "data": [
+                                                        "tekst"
+                                                    ]
+                                                },
+                                                "file": {
+                                                    "data": {
+                                                        "id": 25,
+                                                        "subscriber_id": 2,
+                                                        "name": "test.txt",
+                                                        "orginal_name": "test.txt",
+                                                        "updated_at": "2017-03-29 11:51:09"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": 26,
+                                                "subscriber_id": 2,
+                                                "subscriber": "Subskrybent",
+                                                "name": "mountain-range",
+                                                "file_id": 26,
+                                                "user_id": 2,
+                                                "user": "Richmond Stamm",
+                                                "is_private": true,
+                                                "company_id": 0,
+                                                "company_name": "-",
+                                                "type_id": 1,
+                                                "tags": {
+                                                    "data": [
+                                                        "obraz"
+                                                    ]
+                                                },
+                                                "file": {
+                                                    "data": {
+                                                        "id": 26,
+                                                        "subscriber_id": 2,
+                                                        "name": "mountain-range.jpg",
+                                                        "orginal_name": "mountain-range.jpg",
+                                                        "updated_at": "2017-03-29 11:51:23"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "code": 401,
+                                    "description": "Unauthorized",
+                                    "response": {
+                                        "message": "Unauthorized"
+                                    }
+                                },
+                                {
+                                    "code": 500,
+                                    "description": "Internal Server Error",
+                                    "response": {
+                                        "message": "Internal Server Error"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "method": "POST",
+                            "path": "/api/v1/documents",
+                            "secured": true,
+                            "short_description": "Store",
+                            "long_description": "Requires <code>Authorization: Bearer token</code> header",
+                            "parameters": [
+                                {
+                                    "name": "file",
+                                    "type": "file",
+                                    "required": "true",
+                                    "defaults": null,
+                                    "description": "File",
+                                    "example": ""
+                                },
+                                {
+                                    "name": "tags",
+                                    "type": "string",
+                                    "required": "false",
+                                    "defaults": null,
+                                    "description": "Comma separated tags",
+                                    "example": "document,image,lorem,ipsum"
+                                }
+                            ],
+                            "status_codes": [
+                                {
+                                    "code": 200,
+                                    "description": "OK",
+                                    "response": {
+                                        "message": "OK"
+                                    }
+                                },
+                                {
+                                    "code": 422,
+                                    "description": "Validation error",
+                                    "response": {
+                                        "message": "Validation error",
+                                        "errors": {
+                                            "file": [
+                                                "Pole file musi być plikiem.",
+                                                "Plik file nie może być większy niż 11000 kilobajtów.",
+                                                "Nieprawidłowy format pliku."
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "code": 500,
+                                    "description": "Internal server error",
+                                    "response": {
+                                        "message": "Internal server error"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Files",
+                    "actions": [
+                        {
+                            "method": "GET",
+                            "path": "/api/v1/files/{id}/{filename}",
+                            "secured": true,
+                            "short_description": "Show",
+                            "long_description": "Requires <code>Authorization: Bearer token</code> header or <code>api_token</code> parameter",
+                            "parameters": null,
+                            "status_codes": [
+                                {
+                                    "code": 200,
+                                    "description": "OK",
+                                    "response": "Lorem ipsum dolor sit amet enim. Etiam ullamcorper. Suspendisse a pellentesque dui, non felis. Maecenas malesuada elit lectus felis, malesuada ultricies. Curabitur et ligula. Ut molestie a, ultricies porta urna. Vestibulum commodo volutpat a, convallis ac, laoreet enim. Phasellus fermentum in, dolor. Pellentesque facilisis. Nulla imperdiet sit amet magna. Vestibulum dapibus, mauris nec malesuada fames ac turpis velit, rhoncus eu, luctus et interdum adipiscing wisi. Aliquam erat ac ipsum. Integer aliquam purus. Quisque lorem tortor fringilla sed, vestibulum id, eleifend justo vel bibendum sapien massa ac turpis faucibus orci luctus non, consectetuer lobortis quis, varius in, purus. Integer ultrices posuere cubilia Curae, Nulla ipsum dolor lacus, suscipit adipiscing. Cum sociis natoque penatibus et ultrices volutpat. Nullam wisi ultricies a, gravida vitae, dapibus risus ante sodales lectus blandit eu, tempor diam pede cursus vitae, ultricies eu, faucibus quis, porttitor eros cursus lectus, pellentesque eget, bibendum a, gravida ullamcorper quam. Nullam viverra consectetuer. Quisque cursus et, porttitor risus. Aliquam sem. In hendrerit nulla quam nunc, accumsan congue. Lorem ipsum primis in nibh vel risus. Sed vel lectus. Ut sagittis, ipsum dolor quam."
+                                },
+                                {
+                                    "code": 401,
+                                    "description": "Unauthorized",
+                                    "response": {
+                                        "message": "Unauthorized"
+                                    }
+                                },
+                                {
+                                    "code": 404,
+                                    "description": "Not Found",
+                                    "response": {
+                                        "message": "Not Found"
+                                    }
+                                },
+                                {
+                                    "code": 500,
+                                    "description": "Internal Server Error",
+                                    "response": {
+                                        "message": "Internal Server Error"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
+        created: function () {
+            console.log('created');
+        },
+
+        methods: {
+            getActionColor(action) {
+                let actionToColor = {
+                    GET: 'primary',
+                    POST: 'success',
+                    PUT: 'warning',
+                    DELETE: 'danger'
+                };
+
+                return actionToColor.hasOwnProperty(action) ? actionToColor[action] : 'light';
+            }
+        }
+    });
+
+    $(document).ready(function() {
+
+        $("pre").each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+
+        $("a.api-desc-toggle").click(function(e) {
+            e.preventDefault();
+
+            $(this).parents("tr").next().toggle();
+            if ($(this).find("i").hasClass("fa-plus-circle")) {
+                $(this).find("i").removeClass("fa-plus-circle text-primary");
+                $(this).find("i").addClass("fa-minus-circle text-primary");
+            }
+            else {
+                $(this).find("i").removeClass("fa-minus-circle text-danger");
+                $(this).find("i").addClass("fa-plus-circle text-primary");
+            }
+        });
+
+    });
+</script>
+</body>
+</html>
